@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Looplay Studio</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+  </head>
+  <body>
+  <!-- TELA DE LOAD E BOTÃO INICIAL -->    
+   <div id="loader" style="
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 3, 22, 0.98); backdrop-filter: blur(8px);
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        z-index: 9999; transition: opacity 0.5s ease;
+     ">
+     <div id="spinner" style="
+       width: 60px;
+       height: 60px;
+       border: 5px solid rgba(255, 255, 255, 0.2);
+       border-top-color: deeppink;
+       border-radius: 50%;
+       animation: spin 1s linear infinite;
+       margin-bottom: 15px;
+     "></div>     
+     
+     <div id="starBtn">
+       <img id="logomarca" src="Imagens/Logomarca.png" alt="Logomarca">
+       <button id="startBtn">INICIAR</button>
+     </div>
+      
+  </div>
+    
+  <!-- Tela informativa (inicia oculta) -->
+  <div id="infoBox">
+    <p>💡 Clique com o botão direito do mouse e arraste para girar a visão pelo ambiente.</p>
+  </div>
+    
+<!-- BOTÃO SANDUÍCHE E MENU LATERAL -->
+    <!-- Botão Sanduíche -->
+<div id="menuToggle">
+  &#9776;
+</div>
+
+<!-- Menu Lateral -->
+<div id="sideMenu">
+  <button><img src="Imagens/btnRetroceder.png" alt="Retroceder"></button>
+  <button><img src="Imagens/btnPlay.png" alt="Play"></button>
+  <button><img src="Imagens/btnPausar.png" alt="Pause"></button>
+  <button><img src="Imagens/btnParar.png" alt="Stop"></button>
+  <button><img src="Imagens/btnAvancar.png" alt="Avançar"></button>
+  <button id="audioSettingsBtn"><img src="Imagens/btnAudio.png" alt="Áudio"></button>
+</div>
+
+<!-- Menu de Áudio -->
+<div id="audioMenu">
+  <label>🎚️ Master</label>
+  <input type="range" id="masterVolume" min="0" max="1" step="0.01" value="0.4">
+
+  <label>🎬 Vídeos</label>
+  <input type="range" id="videoVolume" min="0" max="1" step="0.01" value="0.75">
+
+  <label>🎵 Música de Fundo</label>
+  <input type="range" id="musicVolume" min="0" max="1" step="0.01" value="0.1">
+</div>
+
+    
+    <a-scene keyboard-shortcuts="" screenshot="" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" 
+           fog="color: #FFFFFF; density: 0; far: 999"
+           shadow="type: pcfsoft" renderer="colorManagement: true; physicallyCorrectLights: true; shadowMapType: pcfsoft" background="color: #C6E2FF">
+            
+      
+      <!-- GLTF e IMAGENS -->
+      <a-assets>
+        
+          <!-- IMAGENS -->
+        <img id="pisoDiffuse" src="Imagens/Piso_Diffuse2.jpg">  
+        <img id="pisoNormal" src="Imagens/Piso_Normal2.jpg">
+        <img id="janela" src="Imagens/Janela2.png">
+        <img id="logo" src="Imagens/Logo.png">
+        <img id="porta1" src="Imagens/Porta_Rosa_Final.png">
+        <img id="porta2" src="Imagens/Porta_Amarela_Final.png">
+        <img id="porta3" src="Imagens/Porta_Azul_Final.png">
+        <img id="tec_inovacao" src="Imagens/Tec_Inovacao_Final.png">
+        <img id="interativo" src="Imagens/Interativo.png">
+        <img id="icon_portfolio" src="Imagens/icone_portfolio.png">
+        
+          
+      </a-assets>            
+      
+      <!-- CÉU -->      
+      <a-sky src="Imagens/Sky_High.jpg" rotation="0 -120 0"></a-sky>
+        
+     <!-- Câmera -->
+      <a-entity  id="rig" position="0 0.8888 0.02127" >
+        <a-camera cursor="fuse: false; rayOrigin: mouse"
+                raycaster="objects: .clickable" wasd-controls-enabled="false"></a-camera>
+      </a-entity>      
+    
+             
+     <!--   Modelo GLTF -->     
+       <a-entity gltf-model="Modelos/P_Lateral_Esquerda.glb" shadow="" material="roughness: 0" rotation="0 90 0"></a-entity>
+       <a-entity gltf-model="Modelos/Parede_Frontal.glb" shadow="" material="roughness: 0" rotation="0 90 0" position="0.19506 0 -0.50038"></a-entity>
+       <a-entity gltf-model="Modelos/Parede_Traseira.glb" shadow="" material="roughness: 0" rotation="0 90 0" position="-0.00674 0 -0.50038" scale="1 1 1.0092"></a-entity>
+       <a-entity gltf-model="Modelos/P_Lateral_Direita.glb" shadow="cast: true; receive: false" material="roughness: 0" rotation="0 90 0" position="-0.0129 0 -0.50584"></a-entity>
+       <a-entity gltf-model="Modelos/Piso.glb" position="0 0 -0.49708" rotation="0 90 0" shadow="" material="metalness: 0.1; roughness: 0.6" scale="1 1 1.06609"></a-entity>
+       <a-entity gltf-model="Modelos/Teto.glb" position="0 0 -0.49708" rotation="0 90 0" shadow="cast: true; receive: false"  material="roughness: 0.6; metalness: 0.1"></a-entity>
+       <a-entity gltf-model="Modelos/Janela.glb" position="6.603 -0.00264 0.47109" rotation="0 -90 0" material="alphaTest: 0.1; transparent: true" shadow="" scale="1.00815 1.00807 1"></a-entity>
+       <a-entity gltf-model="Modelos/Janelinha.glb" material="alphaTest: 0.1; transparent: true" shadow="" rotation="0 90 0" position="0.45068 -0.01507 -0.58605" scale="1 1 1.14198"></a-entity>
+       <a-entity gltf-model="Modelos/Colunas.glb" shadow="receive: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="0 0 -0.4795"></a-entity>
+       <a-entity gltf-model="Modelos/Colunas.glb" shadow= "cast: false; receive: true" material="metalness: 0.6; roughness: 0.6" rotation="0 180 0" position="0.63879 0.01141 2.11206"></a-entity>
+       <a-entity gltf-model="Modelos/Rack.glb" shadow="cast: false; receive: true" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="0 0 -0.42581"></a-entity>
+       <a-entity gltf-model="Modelos/Sofa.glb" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="-0.03758 0 -1.66303"></a-entity>
+       <a-entity gltf-model="Modelos/Banquinho.glb" shadow="cast: false; receive: true" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="0 0 -0.61066"></a-entity>
+       <a-entity gltf-model="Modelos/Lixeira.glb" shadow="" material="metalness: 0.6; roughness: 0.6" position="-2.62713 -0.04296 0.41205"></a-entity>
+       <a-entity gltf-model="Modelos/Lixeira.glb" shadow="" material="metalness: 0.6; roughness: 0.6" id="Lixeira1-2" position="2.59116 -0.03893 -3.68249"></a-entity>
+       <a-entity gltf-model="Modelos/Janela_Teto.glb" shadow="cast: true; receive: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="-0.00575 0 -0.50329"></a-entity>
+       <a-entity gltf-model="Modelos/Tapete.glb" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="0.18081 0 -0.56415" scale="1.10423 1.10423 1.10423"></a-entity>
+       <a-entity gltf-model="Modelos/TV.glb" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="90 90 0" position="-4.11759 2.57914 -1.69512" scale="0.94904 2.25909 0.92892"></a-entity>
+       <a-entity gltf-model="Modelos/Revista1.glb" id="revista1" class="clickable" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="-1.20173 -0.30962 -1.25535" scale="1.4509 1.4509 1.4509"></a-entity>
+       <a-entity gltf-model="Modelos/Revista2.glb" id="revista2" class="clickable" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="-1.64381 -0.42137 -1.87941" scale="1.57727 1.57727 1.57727"></a-entity>
+       <a-entity gltf-model="Modelos/Revista3.glb" id="revista3" class="clickable" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="-1.43889 -0.38571 -0.36504" scale="1.5304 1.5304 1.5304"></a-entity>
+       <a-entity gltf-model="Modelos/Vaso.glb" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="0 0 -0.52188"></a-entity>
+       <a-entity gltf-model="Modelos/Enfeite_Cubo.glb" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="0 0 -0.52188"></a-entity>
+       <a-entity gltf-model="Modelos/TreLuzes.glb" shadow="cast: false" material="emissive: #fff700; emissiveIntensity: 50; metalness: 0.6; roughness: 0.6" rotation="0 180 0" position="0.47533 0.03348 1.94139"></a-entity>
+       <a-entity gltf-model="Modelos/TreLuzes.glb" shadow="cast: false" material="emissive: #fff700; emissiveIntensity: 50; metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="0 0.03348 -0.49903"></a-entity>
+       <a-entity gltf-model="Modelos/Prateleiras.glb" shadow="cast: false" material="metalness: 0.6; roughness: 0.6" rotation="0 90 0" position="-0.01025 0.53209 -0.55191"></a-entity>
+      
+      <!-- OBJETOS -->
+       <a-plane src="#logo" material="transparent: true" shadow="cast: false; receive: false" position="0.1 2.24 -3.86" width="3" height="1" scale="1 0.82271 1"></a-plane>
+       <a-plane src="#logo" material="transparent: true" shadow="cast: false; receive: false" position="-2.74256 2.24 2.03488" width="3" height="1" id="Logo-2" rotation="0 90 0" scale="1 0.82271 1"></a-plane>
+       <a-plane src="#porta1" id="portfolio" class="clickable" link-to="https://www.google.com" shadow="" position="1.91387 1.76839 4.48739" rotation="0 180 0" scale="1.64074 3.5607 1.62192" ></a-plane>
+       <a-plane src="#porta2" id="sobre" class="clickable" link-to="https://www.wikipedia.org" shadow="" position="-0.04672 1.76839 4.48739" rotation="0 180 0" scale="1.64074 3.5607 1.62192" ></a-plane>
+       <a-plane src="#porta3" id="contato" class="clickable" link-to="https://www.youtube.com" shadow="" position="-1.97571 1.76839 4.48739" rotation="0 180 0" scale="1.64074 3.5607 1.62192" ></a-plane>
+       <a-plane src="#tec_inovacao" material="transparent: true" shadow="cast: false; receive: false" position="2.98672 2.2351 -3.35578" rotation="0 -90 90" width="3" height="1" scale="1.25892 1.57954 1.19817"></a-plane>
+       <a-plane src="#interativo" material="transparent: true" shadow="cast: false; receive: false" position="2.98672 2.16496 3.79519" rotation="0 -90.00021045914971 -90" width="3" height="1"></a-plane>
+       <a-plane src="#icon_portfolio" material="transparent: true" shadow="cast: false; receive: false" width="3" height="1"></a-plane>
+      
+      <!-- Luz ambiente para enxergar os planos -->
+      <a-entity light="decay: -0.29; intensity: 1.0; type: point" position="-1.35328 2.18616 -1.50823" id="Ambiente01"></a-entity>
+      <a-entity light="decay: 0.29; intensity: 1.0; type: point" position="-0.26984 2.18616 2.41798" id="Ambiente02"></a-entity>
+      
+      <!-- LUZES SPOT  -->
+      <a-entity light="angle: 57.76; decay: 1.28; intensity: 20; type: spot; castShadow: true" position="4.62888 2.28245 1.79071" rotation="0 50 0" id="Point01"></a-entity> 
+      <a-entity light="angle: 57.76; decay: 0.83; distance: 9; intensity: 5.59; type: spot; castShadow: true" position="4.62888 2.28245 -1.60741" rotation="6.202268132291161 113.69774486576055 -31.60721676839186" id="Spot02"></a-entity>
+      <a-entity position="0.19458 4.12353 -2.58557" rotation="-68.36532411500983 0 0" light="color: #ffea00; decay: 1.65; intensity: 8; penumbra: 0.13; type: spot; castShadow: true; shadowBias: -0.16" id="Spot03"></a-entity>
+      <a-entity position="-2.07997 4.12353 1.97892" rotation="-74.26048686911086 90.00021045914971 0" light="color: #ffea00; decay: 1.19; intensity: 8; penumbra: 0.13; type: spot; castShadow: true; shadowBias: -0.16" id="Spot04"></a-entity>
+      
+      <!-- Direcional: Luz do Sol -->
+      <a-entity light="intensity: 10; castShadow: true; shadowCameraTop: 10; shadowCameraRight: 10; shadowCameraBottom: -10; shadowCameraLeft: -10; shadowMapHeight: 2048; shadowMapWidth: 2048" position="8.11156 17.49781 -6.79" rotation="-0.08 0.7500000000000001 0" id="Sol">
+      </a-entity>   
+      
+      <!-- AUDIOS -->
+        <!-- Música de fundo -->
+          <audio id="bgMusic" src="Audios/Audio_Ambiente_Final.mp3" autoplay loop></audio>
+      
+      <!-- VÍDEOS -->
+      <a-video id="videoPlane" 
+               src="#video1" 
+               position="-2.98301 2.56366 -1.68641" 
+               width="4" 
+               height="2.25" 
+               class="clickable" 
+               rotation="0 90 0" 
+               scale="0.79054 0.79054 -1.02396">
+      </a-video>
+        
+    </a-scene>
+    
+    <!-- Vídeo base -->
+    <video id="video1"
+         preload="auto"
+         crossorigin="anonymous"
+         playsinline
+         webkit-playsinline>
+    </video>
+    
+        
+    <!-- Controles futuristas -->
+    <div id="videoControls">
+       <button id="prevBtn" title="Retroceder">
+       <img src="Imagens/btnRetroceder.png" alt="Retroceder">
+       </button>
+       <button id="playBtn" title="Play">
+       <img src="Imagens/btnPlay.png" alt="Play">
+       </button>
+       <button id="pauseBtn" title="Pausar">
+       <img src="Imagens/btnPausar.png" alt="Pausar">
+       </button>
+       <button id="stopBtn" title="Parar">
+       <img src="Imagens/btnParar.png" alt="Parar">
+       </button>
+       <button id="nextBtn" title="Avançar">
+       <img src="Imagens/btnAvancar.png" alt="Avançar">
+       </button>
+       <button id="closeBtn" title="Fechar">
+       <img src="Imagens/btnSair.png" alt="Fechar">
+       </button>
+    </div>
+    
+    
+    <!-- Overlay (começa oculto) -->
+  <div id="overlay" aria-hidden="true">
+    <div class="overlay-inner" role="dialog" aria-modal="true">
+      <button id="fecharBtn" aria-label="Fechar">✖</button>
+      <img id="popupImage" src="Imagens/Capa_Revista1.jpg" alt="Imagem informativa">
+    </div>
+  </div>
+    
+    <script src="main.js" defer></script>
+    
+  </body>
+</html>

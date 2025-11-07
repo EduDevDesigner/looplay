@@ -1,0 +1,364 @@
+body {
+  margin: 0;
+  background-color: black;
+  overflow: hidden;
+}
+
+/* Controles de vídeo com animação */
+#videoControls {
+  position: absolute;
+  bottom: -100px; /* Começa fora da tela */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px 25px;
+  border-radius: 12px;
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  transition: bottom 0.5s ease, opacity 0.5s ease;
+  box-shadow: 0 0 15px #0ff;
+  backdrop-filter: blur(10px);
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Classe ativa que exibe os controles */
+#videoControls.show {
+  bottom: 20px; /* Sobe para a posição visível */
+  opacity: 1;
+}
+
+#videoControls button {
+  background: transparent;
+  border: 2px solid #0ff;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  user-select: none;
+  padding: 0;
+}
+
+#videoControls button img {
+  width: 80%; /* Ajusta tamanho proporcional */
+  height: auto;
+  filter: drop-shadow(0 0 6px #0ff); /* efeito neon */
+}
+
+#videoControls button:hover {
+  background: rgba(0, 255, 255, 0.2);
+  transform: scale(1.2);
+  box-shadow: 0 0 12px #0ff;
+}
+
+
+
+
+
+/* Overlay transparente com fundo borrado */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
+}
+
+.overlay-content {
+  position: relative;
+  max-width: 80%;
+  max-height: 80%;
+}
+
+.overlay-content img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 20px black;
+}
+
+#fecharBtn {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: purple;
+  color: white;
+  border: none;
+  font-size: 20px;
+  border-radius: 20%;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+}
+
+
+/* Overlay full-screen — inicialmente oculto via display:none no JS */
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: none;            /* oculto por padrão */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: auto;
+  /* fundo translúcido + blur */
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px) saturate(120%);
+}
+
+/* Container interno com borda / glow */
+.overlay-inner {
+  position: relative;
+  width: min(85vw, 1000px);
+  max-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,255,255,0.08), inset 0 0 30px rgba(0,255,255,0.02);
+  border: 1px solid rgba(225,225,225,0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.18));
+}
+
+/* Imagem responsiva dentro do overlay */
+#popupImage {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 8px;
+  border: 2px solid rgba(0,255,255,0.15);
+  box-shadow: 0 0 30px rgba(0,255,255,0.12);
+}
+
+
+/* ------------------------------------------------------------------------ */
+/* startBtn */
+#startBtn {
+  display: none; /* fica oculto até ser mostrado pelo script */
+  padding: 15px 40px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #ff4ecb, #ffe53b, #ff4ecb);
+  background-size: 400% 400%;
+  animation: gradientMove 6s ease infinite;
+  box-shadow: 0 0 15px rgba(255, 78, 203, 0.8), 0 0 25px rgba(255, 229, 59, 0.6);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#startBtn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(255, 78, 203, 1), 0 0 40px rgba(255, 229, 59, 1);
+}
+
+#startBtn:active {
+  transform: scale(0.96);
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* LOGOMARCA */
+#startScreen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+#logomarca {
+  display: none; /* fica oculto até ser mostrado pelo script */
+  width: 180px; /* ajuste conforme o tamanho desejado */
+  margin-bottom: 50px;
+  animation: glow 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0% { filter: drop-shadow(0 0 5px rgba(255, 78, 203, 0.7)); }
+  50% { filter: drop-shadow(0 0 20px rgba(255, 229, 59, 0.9)); }
+  100% { filter: drop-shadow(0 0 5px rgba(255, 78, 203, 0.7)); }
+}
+
+/* MENU LATERAL */
+/* Botão Sanduíche */
+#menuToggle {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1100;
+  user-select: none;
+  transition: transform 0.3s;
+
+  /* Efeito degradê rosa → amarelo */
+  background: linear-gradient(270deg, #ff00cc, #ffcc00, #ff00cc);
+  background-size: 400% 400%;
+
+  /* Compatibilidade cross-browser */
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent; /* <- só essa já resolve */
+
+  animation: gradientShift 6s ease infinite;
+  text-shadow: 0 0 8px rgba(255, 200, 0, 0.6);
+}
+
+#menuToggle:hover {
+  transform: scale(1.2);
+}
+
+/* Animação do degradê */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* Menu lateral */
+#sideMenu {
+  position: fixed;
+  top: 100;
+  right: -100px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px 10px;
+  border-left: 2px solid #0ff;
+  box-shadow: -2px 0 15px #0ff;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: right 0.5s ease;
+  z-index: 1000;
+  padding-top: 300px !important; /* aumenta a distância do topo */
+  
+}
+
+#sideMenu.show {
+  right: 0;
+  
+}
+
+/* Botões do menu lateral iguais aos do vídeo */
+#sideMenu button {
+  background: transparent;
+  border: 2px solid #0ff;
+  color: #0ff;
+  font-weight: bold;
+  font-size: 1.8rem;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  text-shadow: 0 0 6px #0ff;
+  transition: background 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  user-select: none;
+}
+
+#sideMenu button img {
+  width: 38px;
+  height: 38px;
+}
+
+#sideMenu button:hover {
+  background: rgba(0, 255, 255, 0.2);
+  transform: scale(1.2);
+  box-shadow: 0 0 12px #0ff;
+}
+
+
+/* PAINEL DO AUDIO */
+/* Menu Áudio */
+#audioMenu {
+  position: fixed;
+  right: 70px;
+  bottom: 80px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #0ff;
+  box-shadow: 0 0 12px #0ff;
+  border-radius: 10px;
+  padding: 15px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2000;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  color: #0ff;
+  text-shadow: 0 0 6px #0ff;
+}
+
+#audioMenu label {
+  margin-top: 5px;
+}
+
+#audioMenu input[type="range"] {
+  width: 150px;
+  accent-color: #ffcc00;
+  cursor: pointer;
+}
+
+
+
+/* TELINHA INFORMATIVA INICIAL */
+#infoBox {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(270deg, #02088b, #0090d4, #001568);
+  background-size: 600% 600%;
+  animation: gradientShift 6s ease infinite;
+  color: #fff;
+  padding: 20px 35px;
+  border-radius: 12px;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  text-shadow: 0 0 8px #0ff, 0 0 15px #0ff;
+  box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+#infoBox.show {
+  opacity: 1;
+}
+
+/* Animação do gradiente neon */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
